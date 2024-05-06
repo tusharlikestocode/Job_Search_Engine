@@ -1,5 +1,5 @@
 import './App.css'
-import CardTemplate from './components/CardTemplate'
+import CardTemplate from './components/CardTemplate/CardTemplate'
 
 function App() {
 
