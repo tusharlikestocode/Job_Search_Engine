@@ -7,7 +7,7 @@ const initialState = {
   mode : [],
   minExperience : 'All',
   minBasePay : 'All',
-  searchCompany : 'All'
+  searchCompany : ''
   
 }
 

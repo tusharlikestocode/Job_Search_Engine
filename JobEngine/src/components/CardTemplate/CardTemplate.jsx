@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -6,12 +7,19 @@ import Typography from '@mui/material/Typography';
 import { Chip,Box,Button,AvatarGroup } from '@mui/material';
 import './CardTemplate.css'
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSelector } from 'react-redux'
 
 
 export default function RecipeReviewCard() {
  const [loading,setLoading]=React.useState(true)
     const [data,setData] =React.useState([])
-
+    const jobRole = useSelector((state)=>state.filter.jobRole)
+    const techStack = useSelector((state)=>state.filter.techStack)
+    const location = useSelector((state)=>state.filter.location)
+    const mode = useSelector((state)=>state.filter.mode)
+    const minBasePay = useSelector((state)=>state.filter.minBasePay)
+    const companyName = useSelector((state)=>state.filter.searchCompany.toLowerCase())
+    const minExperience = useSelector((state)=>state.filter.minExperience)
   
     React.useEffect(()=>{
         
@@ -53,6 +61,17 @@ export default function RecipeReviewCard() {
            
     },[])
 
+
+    const filterData = () =>{
+        if(data){
+            let filteredData = data;
+             filteredData = data.filter(job => job.location==='bangalore')
+        // setData(filteredData)
+        console.log(filteredData);
+
+        }
+    }
+       // ,minBasePay,jobRole,techStack,mode,minBasePay,minExperience
     if(loading){
         return (
             <Box sx={{
@@ -75,7 +94,9 @@ export default function RecipeReviewCard() {
     <Box sx={{mt:2,display:'flex',justifyContent:'space-between',flexWrap:'wrap'}}>
 
       {
-        data.map((d)=>(
+        data.filter((job)=>{
+            return companyName.toLowerCase() === '' ? job : job.companyName.toLowerCase().includes(companyName)
+        }).map((d)=>(
             
             <Card key={d} sx={{ mt:4,maxWidth: 345,boxShadow:3,borderRadius:5,height:'100%'}}>
             <CardContent>
