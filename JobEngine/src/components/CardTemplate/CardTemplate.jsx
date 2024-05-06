@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux'
 
 export default function RecipeReviewCard() {
  const [loading,setLoading]=React.useState(true)
+ const [isLoadingMoreData,setIsLoadingMoreData]=React.useState(false)
+ const [index, setIndex] = React.useState(1);
     const [data,setData] =React.useState([])
     const jobRole = useSelector((state)=>state.filter.jobRole)
     const techStack = useSelector((state)=>state.filter.techStack)
@@ -32,7 +34,7 @@ export default function RecipeReviewCard() {
                
                let bodyContent = JSON.stringify({
                  "limit": 10,
-                 "offset": 100
+                 "offset": index
                });
                let response;
                
@@ -57,10 +59,68 @@ export default function RecipeReviewCard() {
         }
         fetchdata()
         
-    
-           
     },[])
 
+    const fetchMoreData = React.useCallback(async () => {
+        if (isLoadingMoreData) return;
+    
+        setIsLoadingMoreData(true);
+    
+        let headersList = {
+            "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+            "Accept": "",
+            "Content-Type": "application/json"
+           }
+           
+           let bodyContent = JSON.stringify({
+             "limit": 10,
+             "offset": index
+           });
+           let response;
+           
+        try{
+            response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON?Content-Type=application%2Fjson", { 
+                method: "POST",
+                body: bodyContent,
+                headers: headersList
+              });
+            
+        }catch(error){
+            console.log("Error Fetching data ",error);
+        }finally{
+            let data = await response.json();
+            console.log(data.jdList);
+            setData(((prevData)=> [...prevData,...data.jdList]))
+            setIndex((prevIndex)=> prevIndex+1)
+            setIsLoadingMoreData(false)
+        }
+     
+    }, [index, isLoadingMoreData]);
+    
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+          const { scrollTop, clientHeight, scrollHeight } =
+            document.documentElement;
+          if (scrollTop + clientHeight >= scrollHeight - 20) {
+            fetchMoreData();
+          }
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+          window.removeEventListener("scroll", handleScroll);
+        };
+      }, [fetchMoreData]);
+
+
+
+
+
+
+
+
+    
 
     const filterData = () =>{
         if(data){
@@ -91,6 +151,8 @@ export default function RecipeReviewCard() {
 
 
   return (
+    <>
+  
     <Box sx={{mt:2,display:'flex',justifyContent:'space-between',flexWrap:'wrap'}}>
 
       {
@@ -190,8 +252,11 @@ jobDetailsFromCompany}
       }
 
             
-       
+      
     </Box>
-    
+    <Box sx={{display:'flex',justifyContent:'center',width:'100%',m:3}}>
+         {isLoadingMoreData && <CircularProgress/>}
+    </Box>
+    </>
   );
 }
