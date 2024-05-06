@@ -9,6 +9,7 @@ import './CardTemplate.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector } from 'react-redux'
 import { min } from '@tensorflow/tfjs';
+import { minPayChange } from '../../store/DropdownSlice';
 
 
 export default function RecipeReviewCard() {
@@ -17,8 +18,14 @@ export default function RecipeReviewCard() {
  const [index, setIndex] = React.useState(1);
     const [data,setData] =React.useState([])
     const jobRole = useSelector((state)=>state.filter.jobRole)
-    const techStack = useSelector((state)=>state.filter.techStack)
-    const locations = useSelector((state)=>state.filter.location)
+    
+    const lowerCasedRoles = jobRole.map(e => e.toLowerCase())
+
+    const techStack = useSelector
+    ((state)=>state.filter.techStack)
+    
+    const location = useSelector((state)=>state.filter.location)
+    const lowerCasedLocations = location.map(l=>l.toLowerCase())
     const mode = useSelector((state)=>state.filter.mode)
     const minBasePay = useSelector((state)=>state.filter.minBasePay)
     const companyName = useSelector((state)=>state.filter.searchCompany.toLowerCase())
@@ -151,13 +158,48 @@ export default function RecipeReviewCard() {
         return filters.map((filter) => filter(item)).every((x) => x === true);
     };
 
+    function filteringByLocation(item){
+        if(lowerCasedLocations.length === 0){
+            return true
+        }else if( lowerCasedLocations.includes(item.location.toLowerCase())){
+                return true
+            
+        }else{
+            return false
+        }
+    }
 
-
-    function filteringByExp(item){
-        if(parseInt(item.minExp)>=minExperience){
+    function filteringByRoles(item){
+        if(lowerCasedRoles.length==0){
+            return true
+        }else if (lowerCasedRoles.includes(item.jobRole)){
             return true
         }else{
             return false
+        }
+
+    }
+
+
+
+    function filteringByExp(item){
+        if(minExperience=='All'){
+            return true
+        }else if(  item.minExp>=parseInt(minExperience)){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    function filteringByPay(item){
+        if(minBasePay=='All'){
+            return true
+        }else if(item.minJdSalary>=parseInt(minBasePay)){
+            return true
+        }else{
+            return false
+
         }
     }
   return (
@@ -169,7 +211,15 @@ export default function RecipeReviewCard() {
  
         data.filter(
             // (job)=>{
-                combineFilters(filterNullValues,filteringByExp)
+                combineFilters(filterNullValues,
+
+                    filteringByExp,
+                    filteringByLocation,
+                    
+                    filteringByRoles,
+
+                filteringByPay
+                )
                     
             
             
