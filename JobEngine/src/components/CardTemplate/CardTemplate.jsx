@@ -27,6 +27,7 @@ export default function RecipeReviewCard() {
     const location = useSelector((state)=>state.filter.location)
     const lowerCasedLocations = location.map(l=>l.toLowerCase())
     const mode = useSelector((state)=>state.filter.mode)
+    const lowerCasedMode = mode.map((el)=>el.toLowerCase())
     const minBasePay = useSelector((state)=>state.filter.minBasePay)
     const companyName = useSelector((state)=>state.filter.searchCompany.toLowerCase())
     const minExperience = useSelector((state)=>state.filter.minExperience)
@@ -195,7 +196,7 @@ export default function RecipeReviewCard() {
     function filteringByPay(item){
         if(minBasePay=='All'){
             return true
-        }else if(item.minJdSalary>=parseInt(minBasePay)){
+        }else if(item.minJdSalary >= minBasePay){
             return true
         }else{
             return false
@@ -212,6 +213,18 @@ export default function RecipeReviewCard() {
             return false
         }
     }
+
+
+    function filteringByMode(item){
+        if(lowerCasedMode.length == 0 || lowerCasedMode.includes("in-office") ){
+            return true
+        }else if(lowerCasedMode.includes("remote") && lowerCasedMode.includes(item.location)){
+            return true
+        }else{
+            return false
+        }
+
+    }
   return (
     <>
   
@@ -221,25 +234,10 @@ export default function RecipeReviewCard() {
  
         data.filter(
             // (job)=>{
-                combineFilters(filterNullValues,
-
-                    filteringByExp,
-                    filteringByLocation,
-                    
-                    filteringByRoles,
-
-                filteringByPay,search
+                combineFilters(filterNullValues,filteringByExp,filteringByLocation,filteringByRoles,filteringByPay,search,
+                filteringByMode
                 )
                     
-            
-            
-            
-        //     minExperience == 'All'? job : job.minExp >= parseInt(minExperience)
-                
-        //     &&
-        //     minBasePay == 'All'? job : job.minJdSalary >= parseInt(minBasePay)
-        //     &&
-        //    companyName.toLowerCase() === '' ? job : job.companyName.toLowerCase().includes(companyName) 
            
             
         // }
