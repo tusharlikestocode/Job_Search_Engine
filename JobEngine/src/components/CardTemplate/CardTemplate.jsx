@@ -146,6 +146,20 @@ export default function RecipeReviewCard() {
             {return false}
         else{return true}
     }
+
+    const combineFilters = (...filters) => (item) => {
+        return filters.map((filter) => filter(item)).every((x) => x === true);
+    };
+
+
+
+    function filteringByExp(item){
+        if(parseInt(item.minExp)>=minExperience){
+            return true
+        }else{
+            return false
+        }
+    }
   return (
     <>
   
@@ -155,7 +169,8 @@ export default function RecipeReviewCard() {
  
         data.filter(
             // (job)=>{
-                filterNullValues    
+                combineFilters(filterNullValues,filteringByExp)
+                    
             
             
             
