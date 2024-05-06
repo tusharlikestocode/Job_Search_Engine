@@ -8,6 +8,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import {InputAdornment,IconButton } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux'
+import { locationChange,techStackChange,rolesChange,modeChange,minExpChange,minPayChange,search } from '../../store/DropdownSlice'
 import SearchIcon from '@mui/icons-material/Search';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,8 +52,8 @@ const locations = [
     'Nodejs',
     'Ruby/Rails'
   ];
-  const Exp = ['None','1','2','3','4','5']
-  const Pay = ['None','10L','20L','30L','40L','50L']
+  const Exp = ['All','1','2','3','4','5']
+  const Pay = ['All','10L','20L','30L','40L','50L']
 function getStyles(name, roles, theme) {
   return {
     fontWeight:
@@ -63,55 +65,37 @@ function getStyles(name, roles, theme) {
 
 export default function MultipleSelectChip() {
   const theme = useTheme();
-  const [roles, setroles] = React.useState([]);
-  const [techstack, setTechStacks] = React.useState([]);
-  const [mode, setMode] = React.useState([]);
-  const [location,setLocation] = React.useState([]);
-  const [minBasePay,setMinBasePay] = React.useState()
-  const [minExp,setMinExp] = React.useState()
+  const dispatch = useDispatch()
+  const jobRole = useSelector((state)=>state.filter.jobRole)
+  const techStack = useSelector((state)=>state.filter.techStack)
+  const location = useSelector((state)=>state.filter.location)
+  const mode = useSelector((state)=>state.filter.mode)
+  const minBasePay = useSelector((state)=>state.filter.minBasePay)
+  const minExperience = useSelector((state)=>state.filter.minExperience)
+
 
   const handleRoleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setroles(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    dispatch(rolesChange(event.target.value))
   };
-  const handleLocationChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setLocation(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+  const handleLocationChange =  (event) => {  
+    dispatch(locationChange(event.target.value)   
     );
   };
   const handleTechStackChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setTechStacks(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    dispatch(techStackChange(event.target.value))
   };
   const handleModeChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setMode(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    dispatch(modeChange(event.target.value))
   };
   const handleExpChange = (event) => {
-    setMinExp(event.target.value);
+    dispatch(minExpChange(event.target.value));
   };
   const handlePayChange = (event) => {
-    setMinBasePay(event.target.value);
+    dispatch(minPayChange(event.target.value));
   };
+  const handleSearchChange = (event) => {
+    dispatch(search(event.target.value))
+  }
 
 
   return (
@@ -123,7 +107,7 @@ export default function MultipleSelectChip() {
           id="demo-multiple-chip"
           multiple
           autoWidth
-          value={roles}
+          value={jobRole}
           onChange={handleRoleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Roles" />}
           renderValue={(selected) => (
@@ -139,7 +123,7 @@ export default function MultipleSelectChip() {
             <MenuItem
               key={name}
               value={name}
-              style={getStyles(name, roles, theme)}
+              style={getStyles(name, jobRole, theme)}
             >
               {name}
             </MenuItem>
@@ -148,20 +132,18 @@ export default function MultipleSelectChip() {
         </FormControl>
         <FormControl sx={{  width: "14.3%"  , m:1}}>
 
-        <InputLabel id="demo-multiple-chip-label">Location</InputLabel>
+        <InputLabel>Location</InputLabel>
 
 
 
         <Select
-            autoWidth
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
+          autoWidth
           multiple
           value={location}
           onChange={handleLocationChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Location" />}
+          input={<OutlinedInput  label="Location" />}
           renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            <Box sx={{ display: 'flex', flexWrap:'wrap', gap: 0.5 }}>
               {selected.map((value) => (
                 <Chip key={value} label={value} />
               ))}
@@ -191,7 +173,7 @@ autoWidth
   labelId="demo-multiple-chip-label"
   id="demo-multiple-chip"
   multiple
-  value={techstack}
+  value={techStack}
   onChange={handleTechStackChange}
   input={<OutlinedInput id="select-multiple-chip" label="TechStack" />}
   renderValue={(selected) => (
@@ -207,7 +189,7 @@ autoWidth
     <MenuItem
       key={l}
       value={l}
-      style={getStyles(l, techstack, theme)}
+      style={getStyles(l, techStack, theme)}
     >
       {l}
     </MenuItem>
@@ -254,7 +236,7 @@ autoWidth
         autoWidth
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={minExp}
+          value={minExperience}
           label="Min Experience"
           placeholder='MinExperience'
           onChange={handleExpChange}
@@ -294,6 +276,7 @@ autoWidth
           autoWidth
             id="outlined-adornment-password"
             type='text'
+            onChange={handleSearchChange}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
