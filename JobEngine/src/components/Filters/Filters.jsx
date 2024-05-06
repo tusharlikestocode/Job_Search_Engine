@@ -38,22 +38,20 @@ const locations = [
     'Pune'
   ];
 
-const Mode = [
+  const Mode = [
     'Remote',
     'Hybrid',
     'In-office'
   ];
-const TechStack = [
+  const TechStack = [
     'React',
     'Golang',
     'PHP',
     'Nodejs',
     'Ruby/Rails'
   ];
-const Exp = [' ','1','2','3','4','5']
-const Pay = [' ','10L','20L','30L','40L','50L']
-
-//   Function to give styles to option in Select 
+  const Exp = ['None','1','2','3','4','5']
+  const Pay = ['None','10L','20L','30L','40L','50L']
 function getStyles(name, roles, theme) {
   return {
     fontWeight:
@@ -80,8 +78,7 @@ export default function MultipleSelectChip() {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
-  }; 
-
+  };
   const handleLocationChange = (event) => {
     const {
       target: { value },
@@ -91,7 +88,6 @@ export default function MultipleSelectChip() {
       typeof value === 'string' ? value.split(',') : value,
     );
   };
-
   const handleTechStackChange = (event) => {
     const {
       target: { value },
@@ -101,7 +97,6 @@ export default function MultipleSelectChip() {
       typeof value === 'string' ? value.split(',') : value,
     );
   };
-
   const handleModeChange = (event) => {
     const {
       target: { value },
@@ -111,32 +106,26 @@ export default function MultipleSelectChip() {
       typeof value === 'string' ? value.split(',') : value,
     );
   };
-
   const handleExpChange = (event) => {
     setMinExp(event.target.value);
   };
-
   const handlePayChange = (event) => {
     setMinBasePay(event.target.value);
   };
 
 
   return (
-    <Box 
-    sx={{display:'flex'}}
-    >
-        <FormControl sx={{  
-            width: "14.3%"  , 
-            mr: 1,mt:1}}
-        >
-        <InputLabel>Roles</InputLabel>
+    <Box sx={{display:'flex'}}>
+        <FormControl sx={{  width: "14.3%"  , mr: 1,mt:1}}>
+        <InputLabel id="demo-multiple-chip-label">Roles</InputLabel>
         <Select
-          
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
           multiple
           autoWidth
           value={roles}
           onChange={handleRoleChange}
-          input={<OutlinedInput  label="Roles" />}
+          input={<OutlinedInput id="select-multiple-chip" label="Roles" />}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {selected.map((value) => (
@@ -157,19 +146,20 @@ export default function MultipleSelectChip() {
           ))}
         </Select>
         </FormControl>
-        <FormControl className='formControl'>
+        <FormControl sx={{  width: "14.3%"  , m:1}}>
 
-        <InputLabel>Location</InputLabel>
+        <InputLabel id="demo-multiple-chip-label">Location</InputLabel>
 
 
 
         <Select
             autoWidth
-          
-              multiple
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
+          multiple
           value={location}
           onChange={handleLocationChange}
-          input={<OutlinedInput  label="Location" />}
+          input={<OutlinedInput id="select-multiple-chip" label="Location" />}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {selected.map((value) => (
@@ -190,18 +180,20 @@ export default function MultipleSelectChip() {
           ))}
         </Select>
         </FormControl>
-        <FormControl className='formControl'>
+        <FormControl sx={{  width: "14.3%"  , m:1}}>
 
-<InputLabel>TechStack</InputLabel>
+<InputLabel id="demo-multiple-chip-label">TechStack</InputLabel>
 
 
 
 <Select
 autoWidth
+  labelId="demo-multiple-chip-label"
+  id="demo-multiple-chip"
   multiple
   value={techstack}
   onChange={handleTechStackChange}
-  input={<OutlinedInput  label="TechStack" />}
+  input={<OutlinedInput id="select-multiple-chip" label="TechStack" />}
   renderValue={(selected) => (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
       {selected.map((value) => (
@@ -222,18 +214,20 @@ autoWidth
   ))}
 </Select>
         </FormControl>
-        <FormControl className='formControl'>
+        <FormControl sx={{  width: "14.3%"  , m:1}}>
 
-<InputLabel>Mode</InputLabel>
+<InputLabel id="demo-multiple-chip-label">Mode</InputLabel>
 
 
 
 <Select
-  autoWidth
+autoWidth
+  labelId="demo-multiple-chip-label"
+  id="demo-multiple-chip"
   multiple
   value={mode}
   onChange={handleModeChange}
-  input={<OutlinedInput  label="Mode" />}
+  input={<OutlinedInput id="select-multiple-chip" label="Mode" />}
   renderValue={(selected) => (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
       {selected.map((value) => (
@@ -274,7 +268,7 @@ autoWidth
   
 </Select>
         </FormControl>
-        <FormControl className='formControl'>
+        <FormControl sx={{  width: "14.3%"  , m:1}}>
 <InputLabel id="demo-simple-select-label">Min Base Pay</InputLabel>
         <Select
         autoWidth
@@ -294,7 +288,7 @@ autoWidth
   
 </Select>
         </FormControl>
-        <FormControl className='formControl'>
+        <FormControl sx={{  width: "14.3%"  , m:1}}>
         <InputLabel htmlFor="outlined-adornment-password">Search Company</InputLabel>
           <OutlinedInput
           autoWidth
