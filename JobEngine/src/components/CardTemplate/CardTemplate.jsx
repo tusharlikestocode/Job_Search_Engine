@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -6,75 +5,105 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Chip,Box,Button,AvatarGroup } from '@mui/material';
 import './CardTemplate.css'
+import CircularProgress from '@mui/material/CircularProgress';
 
 
-export default function CardTemplate() {
+export default function RecipeReviewCard() {
+ const [loading,setLoading]=React.useState(true)
+    const [data,setData] =React.useState([])
+
+  
+    React.useEffect(()=>{
+        
+        const fetchdata = async ()=>{
+            let headersList = {
+                "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+                "Accept": "",
+                "Content-Type": "application/json"
+               }
+               
+               let bodyContent = JSON.stringify({
+                 "limit": 10,
+                 "offset": 100
+               });
+               
+               let response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON?Content-Type=application%2Fjson", { 
+                 method: "POST",
+                 body: bodyContent,
+                 headers: headersList
+               });
+               
+               let data = await response.json();
+               console.log(data.jdList);
+               setData(data.jdList)               
+               setLoading(false)
+        }
+        fetchdata()
+        
+      
+           
+    },[])
+
+    if(loading){
+        return (
+            <Box sx={{
+                display:'flex',
+                height:"100vh",
+                justifyContent:'center',
+                alignItems:"center"
+            }}>
+                <Typography>
+            Load
+        </Typography>
+        <CircularProgress />
+
+            </Box>
+        )
+    }
 
 
   return (
     <Box sx={{mt:2,display:'flex',justifyContent:'space-between',flexWrap:'wrap'}}>
-            <Card sx={{ mt:4,maxWidth: 345,boxShadow:3,borderRadius:5,height:'100%'}}>
-            {/* Chip to display no. of days job was posted */}
+
+      {
+        data.map((d)=>(
+            
+            <Card key={d} sx={{ mt:4,maxWidth: 345,boxShadow:3,borderRadius:5,height:'100%'}}>
             <CardContent>
-                <Chip 
-                label="⌛ Posted 10 days ago" 
-                variant='outlined'  
-                sx={{
-                    borderColor:"lightgrey",
-                    boxShadow:"0px 1px lightgrey",
-                    borderRadius:3,
-                    padding:0.1}}/>
+            <Chip label="⌛ Posted 10 days ago" variant='outlined'  sx={{borderColor:"lightgrey",boxShadow:"0px 1px lightgrey",borderRadius:3,padding:0.1}}/>
             </CardContent>
-            {/* Logo */}
             <CardContent>
-            <Box sx={{
-                display:'flex',
-                alignItems:'center'}}>
-            <Avatar 
-                alt="Logo" 
-                src={'https://logo.clearbit.com/dropbox.com'} 
-                sx={{mr:1}}  
-                />
-                <Box>
-            {/* Company Name */}
-                    <Typography sx={{
-                        color:"text.secondary",
-                        fontSize:15}}>
-                        Company Name
-                    </Typography>
-                {/* Job Role */}
-                    <Typography sx={{
-                        fontSize:20}}>
-                        Job Role
-                    </Typography>
-                </Box>
+            <Box sx={{display:'flex',alignItems:'center'}}>
+            <Avatar alt="Remy Sharp" src={d.logoUrl} sx={{mr:1}}  />
+            <Box>
+            <Typography sx={{color:"text.secondary",fontSize:15}}>
+                {d.companyName}
+            </Typography>
+            <Typography sx={{fontSize:20}}>
+                {d.jobRole.toUpperCase()}
+            </Typography>
+            
             </Box>
             
-            {/* Location */}
-            <Typography sx={{
-                ml:6,
-                fontSize:14,
-                fontWeight:650
-                }}>
-                        Location
+         
+            </Box>
+             <Typography sx={{ml:6,fontSize:14,fontWeight:"650"}}>
+                  { d.location.toUpperCase()}
             </Typography>
-
-            {/* Estimated Salary  */}
             <Typography  sx={{mt:2}} >
-                Estimated Salary: $ 10- 13 LPA✅
+                Estimated Salary:  {d.minJdSalary
+} -{d.maxJdSalary} {d.salaryCurrencyCode}✅
             </Typography>
-
-
-            {/* Job Description */}
-            <Typography 
-                className="fadedtext" 
-                sx={{mt:2,height:200}}
-            >
+            <Typography className="fadedtext" sx={{mt:2,height:200}}>
+                
+           
                 <b>  Job Description </b> <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia mollitia possimus culpa rerum dolorem eos nulla nihil saepe facere. Exercitationem vero earum, at suscipit debitis perferendis ducimus? Dolores, earum asperiores.       
+{d.
+jobDetailsFromCompany}        
+        
+        
+        
             </Typography>
-
-
             <Typography sx={{
                 width:'100%',
                 textAlign:'center',
@@ -83,17 +112,13 @@ export default function CardTemplate() {
                 color:"#4943da",
                 
             }}
+            
             onClick={()=>{
-                console.log("Clicked");
+                console.log("CLCI");
             }}
             >
                 View Job
             </Typography>
-
-
-
-
-            {/* Minimum Experience */}
             <Typography sx={{
                 marginBottom:1,
                 marginTop:1,
@@ -104,37 +129,39 @@ export default function CardTemplate() {
                 <Typography sx={{
                     color:"text.primary"
                 }}>
-                1 years
+                {d.minExp} years
                 </Typography>
                 
             </Typography>
-
-            {/* Easy Apply Button */}
-            <Button 
-            variant='contained' 
-            sx={{
-                width:'100%',
-                backgroundColor:"#54efc3",
-                mb:1,
-                color:'black'}}>
-                ⚡ Easy Apply              
+            <Button variant='contained' sx={{width:'100%',backgroundColor:"#54efc3",mb:1}}>
+                <Typography color={"black"}>
+                ⚡ Easy Apply
+                </Typography>
+              
             </Button>
-
-            {/* Quick Referral Button  */}
-            <Button 
-                variant='contained' 
-                sx={{
-                    width:'100%',backgroundColor:"#4943da"}}>
+            <Button variant='contained' sx={{width:'100%',backgroundColor:"#4943da"}}>
                
                <AvatarGroup max={3} sx={{mr:1}}>
                <Avatar sizes='large' sx={{ width: 24, height: 24  }}/>
                 <Avatar sizes='large' sx={{ width: 24, height: 24  }}/>
                </AvatarGroup>
+                <Typography >
                 Unlock Referral asks
-                </Button>
+        
+                </Typography>
+              
+            </Button>
             </CardContent>
+            
+        
+        
             </Card>
-        </Box>
+        ))
+      }
+
+            
+       
+    </Box>
     
   );
 }
