@@ -26,21 +26,30 @@ export default function RecipeReviewCard() {
                  "limit": 10,
                  "offset": 100
                });
+               let response;
                
-               let response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON?Content-Type=application%2Fjson", { 
-                 method: "POST",
-                 body: bodyContent,
-                 headers: headersList
-               });
+            try{
+                response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON?Content-Type=application%2Fjson", { 
+                    method: "POST",
+                    body: bodyContent,
+                    headers: headersList
+                  });
+                
+            }catch(error){
+                console.log("Error Fetching data ",error);
+            }finally{
+                let data = await response.json();
+                console.log(data.jdList);
+                setData(data.jdList)
+                setLoading(false)
+            }
+
+                   
                
-               let data = await response.json();
-               console.log(data.jdList);
-               setData(data.jdList)               
-               setLoading(false)
         }
         fetchdata()
         
-      
+    
            
     },[])
 
