@@ -173,7 +173,7 @@ export default function RecipeReviewCard() {
     function filteringByRoles(item){
         if(lowerCasedRoles.length==0){
             return true
-        }else if (lowerCasedRoles.includes(item.jobRole)){
+        }else if (lowerCasedRoles.includes(item.jobRole.toLowerCase())){
             return true
         }else{
             return false
