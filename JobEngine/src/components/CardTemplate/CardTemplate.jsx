@@ -202,6 +202,16 @@ export default function RecipeReviewCard() {
 
         }
     }
+
+    function search(item){
+        if(companyName == ''){
+            return true
+        }else if(item.companyName.toLowerCase().includes(companyName)){
+            return true
+        }else{
+            return false
+        }
+    }
   return (
     <>
   
@@ -218,7 +228,7 @@ export default function RecipeReviewCard() {
                     
                     filteringByRoles,
 
-                filteringByPay
+                filteringByPay,search
                 )
                     
             
@@ -259,8 +269,8 @@ export default function RecipeReviewCard() {
                   { d.location.toUpperCase()}
             </Typography>
             <Typography  sx={{mt:2}} >
-                Estimated Salary:  {d.minJdSalary
-} -{d.maxJdSalary} {d.salaryCurrencyCode}✅
+                Estimated Salary: {d.salaryCurrencyCode}  {d.minJdSalary
+} -{d.maxJdSalary} K ✅
             </Typography>
             <Typography className="fadedtext" sx={{mt:2,height:200}}>
                 
