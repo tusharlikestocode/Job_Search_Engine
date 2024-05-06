@@ -53,7 +53,7 @@ const locations = [
     'Ruby/Rails'
   ];
   const Exp = ['All','1','2','3','4','5']
-  const Pay = ['All','10L','20L','30L','40L','50L']
+  const Pay = ['All','10','20','30','40','50']
 function getStyles(name, roles, theme) {
   return {
     fontWeight:

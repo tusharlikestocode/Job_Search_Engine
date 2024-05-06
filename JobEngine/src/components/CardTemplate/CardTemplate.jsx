@@ -8,6 +8,7 @@ import { Chip,Box,Button,AvatarGroup } from '@mui/material';
 import './CardTemplate.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector } from 'react-redux'
+import { min } from '@tensorflow/tfjs';
 
 
 export default function RecipeReviewCard() {
@@ -17,7 +18,7 @@ export default function RecipeReviewCard() {
     const [data,setData] =React.useState([])
     const jobRole = useSelector((state)=>state.filter.jobRole)
     const techStack = useSelector((state)=>state.filter.techStack)
-    const location = useSelector((state)=>state.filter.location)
+    const locations = useSelector((state)=>state.filter.location)
     const mode = useSelector((state)=>state.filter.mode)
     const minBasePay = useSelector((state)=>state.filter.minBasePay)
     const companyName = useSelector((state)=>state.filter.searchCompany.toLowerCase())
@@ -114,19 +115,10 @@ export default function RecipeReviewCard() {
       }, [fetchMoreData]);
 
 
-
-
-
-
-
-
-    
-
     const filterData = () =>{
         if(data){
             let filteredData = data;
              filteredData = data.filter(job => job.location==='bangalore')
-        // setData(filteredData)
         console.log(filteredData);
 
         }
@@ -149,18 +141,37 @@ export default function RecipeReviewCard() {
         )
     }
 
-
+    function filterNullValues(item){
+        if(item.maxExp==null || item.minExp==null || item.minJdSalary==null || item.maxJdSalary==null )
+            {return false}
+        else{return true}
+    }
   return (
     <>
   
     <Box sx={{mt:2,display:'flex',justifyContent:'space-between',flexWrap:'wrap'}}>
 
-      {
-        data.filter((job)=>{
-            return companyName.toLowerCase() === '' ? job : job.companyName.toLowerCase().includes(companyName)
-        }).map((d)=>(
+      {        
+ 
+        data.filter(
+            // (job)=>{
+                filterNullValues    
             
-            <Card key={d} sx={{ mt:4,maxWidth: 345,boxShadow:3,borderRadius:5,height:'100%'}}>
+            
+            
+        //     minExperience == 'All'? job : job.minExp >= parseInt(minExperience)
+                
+        //     &&
+        //     minBasePay == 'All'? job : job.minJdSalary >= parseInt(minBasePay)
+        //     &&
+        //    companyName.toLowerCase() === '' ? job : job.companyName.toLowerCase().includes(companyName) 
+           
+            
+        // }
+    ).map((d)=>(
+            
+            <Card key={d.jdUid
+            } sx={{ mt:4,maxWidth: 345,boxShadow:3,borderRadius:5,height:'100%'}}>
             <CardContent>
             <Chip label="⌛ Posted 10 days ago" variant='outlined'  sx={{borderColor:"lightgrey",boxShadow:"0px 1px lightgrey",borderRadius:3,padding:0.1}}/>
             </CardContent>
