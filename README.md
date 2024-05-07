@@ -1,5 +1,15 @@
 # Frontend Assignment by WeekDay
 
+### Instructions to run:
+
+1.  `git clone repository-link`
+2. In the terimnal,run  `npm install` 
+3. then run, `npm run dev`
+  
+
+
+
+
 ### Requirements Completed:
 
 1. **Job Cards**: Each job listing is displayed as a card containing the following information
