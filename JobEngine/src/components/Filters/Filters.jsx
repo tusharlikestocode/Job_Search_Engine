@@ -1,16 +1,26 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
-import {InputAdornment,IconButton } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux'
-import { locationChange,techStackChange,rolesChange,modeChange,minExpChange,minPayChange,search } from '../../store/DropdownSlice'
-import SearchIcon from '@mui/icons-material/Search';
+import * as React from "react";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
+import { InputAdornment, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useSelector, useDispatch } 
+from "react-redux";
+import {
+  locationChange,
+  techStackChange,
+  rolesChange,
+  modeChange,
+  minExpChange,
+  minPayChange,
+  search,
+} from "../../store/DropdownSlice";
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,38 +32,34 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Frontend',
-  'Backend',
-  'Flutter',
-  'IOS',
-  'React Native',
-  'Android',
-  'Data Engineer','Tech Lead'
+const JobRoles = [
+  "Frontend",
+  "Backend",
+  "IOS",
+  "React Native",
+  "Android",
+  "Data Engineer",
+  "Tech Lead",
 ];
 
+const locations = ["Delhi NCR", "Bangalore", "Mumbai", "Pune", "Chennai"];
 
-const locations = [
-    'Delhi NCR',
-    'Bangalore',
-    'Mumbai',
-    'Pune','Chennai'
-  ];
-
-  const Mode = [
-    'Remote',
-    'Hybrid',
-    'In-office'
-  ];
-  const TechStack = [
-    'React',
-    'Golang',
-    'PHP',
-    'Nodejs',
-    'Ruby/Rails'
-  ];
-  const Exp = ['All','1','2','3','4','5','6','7','8','10']
-  const Pay = ['All','10K','20K','30K','40K','50K','60K','70K','80','90K','100K']
+const Mode = ["Remote", "Hybrid", "In-office"];
+const TechStack = ["React", "Golang", "PHP", "Nodejs", "Ruby/Rails"];
+const Exp = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "10"];
+const Pay = [
+  "All",
+  "10K",
+  "20K",
+  "30K",
+  "40K",
+  "50K",
+  "60K",
+  "70K",
+  "80",
+  "90K",
+  "100K",
+];
 function getStyles(name, roles, theme) {
   return {
     fontWeight:
@@ -65,27 +71,27 @@ function getStyles(name, roles, theme) {
 
 export default function MultipleSelectChip() {
   const theme = useTheme();
-  const dispatch = useDispatch()
-  const jobRole = useSelector((state)=>state.filter.jobRole)
-  const techStack = useSelector((state)=>state.filter.techStack)
-  const location = useSelector((state)=>state.filter.location)
-  const mode = useSelector((state)=>state.filter.mode)
-  const minBasePay = useSelector((state)=>state.filter.minBasePay)
-  const minExperience = useSelector((state)=>state.filter.minExperience)
+  const dispatch = useDispatch();
+  // accessing variable in the store
+  const jobRole = useSelector((state) => state.filter.jobRole);
+  const techStack = useSelector((state) => state.filter.techStack);
+  const location = useSelector((state) => state.filter.location);
+  const mode = useSelector((state) => state.filter.mode);
+  const minBasePay = useSelector((state) => state.filter.minBasePay);
+  const minExperience = useSelector((state) => state.filter.minExperience);
 
-
+  // function to handle input in the select/dropdown/search component
   const handleRoleChange = (event) => {
-    dispatch(rolesChange(event.target.value))
+    dispatch(rolesChange(event.target.value));
   };
-  const handleLocationChange =  (event) => {  
-    dispatch(locationChange(event.target.value)   
-    );
+  const handleLocationChange = (event) => {
+    dispatch(locationChange(event.target.value));
   };
   const handleTechStackChange = (event) => {
-    dispatch(techStackChange(event.target.value))
+    dispatch(techStackChange(event.target.value));
   };
   const handleModeChange = (event) => {
-    dispatch(modeChange(event.target.value))
+    dispatch(modeChange(event.target.value));
   };
   const handleExpChange = (event) => {
     dispatch(minExpChange(event.target.value));
@@ -94,24 +100,32 @@ export default function MultipleSelectChip() {
     dispatch(minPayChange(event.target.value));
   };
   const handleSearchChange = (event) => {
-    dispatch(search(event.target.value))
-  }
-
+    dispatch(search(event.target.value));
+  };
 
   return (
-    <Box sx={{display:'flex'}}>
-        <FormControl sx={{  width: "14.3%"  , mr: 1,mt:1}}>
-        <InputLabel id="demo-multiple-chip-label">Roles</InputLabel>
+    <Box sx={{ display: "flex" }}>
+      {/* Filter by Job Roles */}
+      <FormControl 
+      sx={{ 
+        width: "14.3%", 
+        mr: 1, 
+        mt: 1 }}>
+        <InputLabel>Roles</InputLabel>
         <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
           multiple
           autoWidth
           value={jobRole}
           onChange={handleRoleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Roles" />}
+          input={<OutlinedInput label="Roles" />}
           renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 0.5,
+              }}
+            >
               {selected.map((value) => (
                 <Chip key={value} label={value} />
               ))}
@@ -119,7 +133,7 @@ export default function MultipleSelectChip() {
           )}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {JobRoles.map((name) => (
             <MenuItem
               key={name}
               value={name}
@@ -129,21 +143,19 @@ export default function MultipleSelectChip() {
             </MenuItem>
           ))}
         </Select>
-        </FormControl>
-        <FormControl sx={{  width: "14.3%"  , m:1}}>
-
+      </FormControl>
+          {/* Filter by Location  */}
+      <FormControl sx={{ width: "14.3%", m: 1 }}>
         <InputLabel>Location</InputLabel>
-
-
 
         <Select
           autoWidth
           multiple
           value={location}
           onChange={handleLocationChange}
-          input={<OutlinedInput  label="Location" />}
+          input={<OutlinedInput label="Location" />}
           renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap:'wrap', gap: 0.5 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (
                 <Chip key={value} label={value} />
               ))}
@@ -152,146 +164,119 @@ export default function MultipleSelectChip() {
           MenuProps={MenuProps}
         >
           {locations.map((l) => (
-            <MenuItem
-              key={l}
-              value={l}
-              style={getStyles(l, location, theme)}
-            >
+            <MenuItem key={l} value={l} style={getStyles(l, location, theme)}>
               {l}
             </MenuItem>
           ))}
         </Select>
-        </FormControl>
-        <FormControl sx={{  width: "14.3%"  , m:1}}>
+      </FormControl>
+      {/* Filter by TechStack  */}
+      <FormControl sx={{ width: "14.3%", m: 1 }}>
+        <InputLabel>TechStack</InputLabel>
 
-<InputLabel id="demo-multiple-chip-label">TechStack</InputLabel>
-
-
-
-<Select
-autoWidth
-  labelId="demo-multiple-chip-label"
-  id="demo-multiple-chip"
-  multiple
-  value={techStack}
-  onChange={handleTechStackChange}
-  input={<OutlinedInput id="select-multiple-chip" label="TechStack" />}
-  renderValue={(selected) => (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-      {selected.map((value) => (
-        <Chip key={value} label={value} />
-      ))}
-    </Box>
-  )}
-  MenuProps={MenuProps}
->
-  {TechStack.map((l) => (
-    <MenuItem
-      key={l}
-      value={l}
-      style={getStyles(l, techStack, theme)}
-    >
-      {l}
-    </MenuItem>
-  ))}
-</Select>
-        </FormControl>
-        <FormControl sx={{  width: "14.3%"  , m:1}}>
-
-<InputLabel id="demo-multiple-chip-label">Mode</InputLabel>
-
-
-
-<Select
-autoWidth
-  labelId="demo-multiple-chip-label"
-  id="demo-multiple-chip"
-  multiple
-  value={mode}
-  onChange={handleModeChange}
-  input={<OutlinedInput id="select-multiple-chip" label="Mode" />}
-  renderValue={(selected) => (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-      {selected.map((value) => (
-        <Chip key={value} label={value} />
-      ))}
-    </Box>
-  )}
-  MenuProps={MenuProps}
->
-  {Mode.map((l) => (
-    <MenuItem
-      key={l}
-      value={l}
-      style={getStyles(l, mode, theme)}
-    >
-      {l}
-    </MenuItem>
-  ))}
-</Select>
-        </FormControl>
-        <FormControl sx={{  width: "14.3%" , m:1 }}>
-<InputLabel id="demo-simple-select-label">Min Experience</InputLabel>
         <Select
-        autoWidth
-          labelId="demo-simple-select-label"
+          autoWidth
+          multiple
+          value={techStack}
+          onChange={handleTechStackChange}
+          input={<OutlinedInput label="TechStack" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          {TechStack.map((l) => (
+            <MenuItem key={l} value={l} style={getStyles(l, techStack, theme)}>
+              {l}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {/* Filter by Mode  */}
+      <FormControl sx={{ width: "14.3%", m: 1 }}>
+        <InputLabel>Mode</InputLabel>
+
+        <Select
+          autoWidth
+          multiple
+          value={mode}
+          onChange={handleModeChange}
+          input={<OutlinedInput label="Mode" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          {Mode.map((l) => (
+            <MenuItem key={l} value={l} style={getStyles(l, mode, theme)}>
+              {l}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {/* Filter by Min Experience  */}
+      <FormControl sx={{ width: "14.3%", m: 1 }}>
+        <InputLabel >Min Experience</InputLabel>
+        <Select
+          autoWidth
           id="demo-simple-select"
           value={minExperience}
           label="Min Experience"
-          placeholder='MinExperience'
+          placeholder="MinExperience"
           onChange={handleExpChange}
         >
-          {Exp.map((e) =>(
-            <MenuItem
-            key={e}
-            value={e}
-            >{e}</MenuItem>
+          {Exp.map((e) => (
+            <MenuItem key={e} value={e}>
+              {e}
+            </MenuItem>
           ))}
-  
-</Select>
-        </FormControl>
-        <FormControl sx={{  width: "14.3%"  , m:1}}>
-<InputLabel id="demo-simple-select-label">Min Base Pay</InputLabel>
+        </Select>
+      </FormControl>
+      {/* Filter by Min Base Pay  */}
+      <FormControl sx={{ width: "14.3%", m: 1 }}>
+        <InputLabel >Min Base Pay</InputLabel>
         <Select
-        autoWidth
-          labelId="demo-simple-select-label"
+          autoWidth
           id="demo-simple-select"
           value={minBasePay}
           label="Min Base Pay"
-          placeholder='Min Base Pay'
+          placeholder="Min Base Pay"
           onChange={handlePayChange}
         >
-          {Pay.map((e) =>(
-            <MenuItem
-            key={e}
-            value={e}
-            >{e}</MenuItem>
+          {Pay.map((e) => (
+            <MenuItem key={e} value={e}>
+              {e}
+            </MenuItem>
           ))}
-  
-</Select>
-        </FormControl>
-        <FormControl sx={{  width: "14.3%"  , m:1}}>
-        <InputLabel htmlFor="outlined-adornment-password">Search Company</InputLabel>
-          <OutlinedInput
+        </Select>
+      </FormControl>
+      {/* Search by Company Search  */}
+      <FormControl sx={{ width: "14.3%", m: 1 }}>
+        <InputLabel>
+          Search Company
+        </InputLabel>
+        <OutlinedInput
           autoWidth
-            id="outlined-adornment-password"
-            type='text'
-            onChange={handleSearchChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  
-                
-                  edge="end"
-                >
-                    <SearchIcon/>
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Search Company"
-          />
-        </FormControl>
+          type="text"
+          onChange={handleSearchChange}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton edge="end">
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+          label="Search Company"
+        />
+      </FormControl>
     </Box>
   );
 }
