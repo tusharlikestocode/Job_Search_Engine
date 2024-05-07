@@ -6,15 +6,15 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { Chip, Box, Button, AvatarGroup } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import "./CardTemplate.css";
 
-export default function RecipeReviewCard() {
+export default function CardTemplate() {
   const [loading, setLoading] = React.useState(true);
   const [isLoadingMoreData, setIsLoadingMoreData] = React.useState(false);
   const [index, setIndex] = React.useState(1);
   const [data, setData] = React.useState([]);
-
+  //  accessing state present in the redux store
   const jobRole = useSelector((state) => state.filter.jobRole);
   const lowerCasedRoles = jobRole.map((e) => e.toLowerCase());
   const techStack = useSelector((state) => state.filter.techStack);
@@ -23,9 +23,12 @@ export default function RecipeReviewCard() {
   const mode = useSelector((state) => state.filter.mode);
   const lowerCasedMode = mode.map((el) => el.toLowerCase());
   const minBasePay = useSelector((state) => state.filter.minBasePay);
-  const companyName = useSelector((state) =>state.filter.searchCompany.toLowerCase());
+  const companyName = useSelector((state) =>
+    state.filter.searchCompany.toLowerCase()
+  );
   const minExperience = useSelector((state) => state.filter.minExperience);
 
+  //   UseEffect to fetch initial Data
   React.useEffect(() => {
     const fetchdata = async () => {
       let headersList = {
@@ -61,6 +64,7 @@ export default function RecipeReviewCard() {
     fetchdata();
   }, []);
 
+  //Function to fetch more data by changing the values of the offset
   const fetchMoreData = React.useCallback(async () => {
     if (isLoadingMoreData) return;
 
@@ -98,6 +102,7 @@ export default function RecipeReviewCard() {
     }
   }, [index, isLoadingMoreData]);
 
+  //useEffect to call the fetchMoreData function once the end of the page is reached
   React.useEffect(() => {
     const handleScroll = () => {
       const { scrollTop, clientHeight, scrollHeight } =
@@ -113,14 +118,6 @@ export default function RecipeReviewCard() {
     };
   }, [fetchMoreData]);
 
-  const filterData = () => {
-    if (data) {
-      let filteredData = data;
-      filteredData = data.filter((job) => job.location === "bangalore");
-      console.log(filteredData);
-    }
-  };
-  // ,minBasePay,jobRole,techStack,mode,minBasePay,minExperience
   if (loading) {
     return (
       <Box
@@ -137,6 +134,7 @@ export default function RecipeReviewCard() {
     );
   }
 
+  //function filter null values
   function filterNullValues(item) {
     if (
       item.maxExp == null ||
@@ -150,12 +148,6 @@ export default function RecipeReviewCard() {
     }
   }
 
-  const combineFilters =
-    (...filters) =>
-    (item) => {
-      return filters.map((filter) => filter(item)).every((x) => x === true);
-    };
-
   function filteringByLocation(item) {
     if (lowerCasedLocations.length === 0) {
       return true;
@@ -165,7 +157,7 @@ export default function RecipeReviewCard() {
       return false;
     }
   }
-
+  // function to filter by Job Roles
   function filteringByRoles(item) {
     if (lowerCasedRoles.length == 0) {
       return true;
@@ -175,7 +167,7 @@ export default function RecipeReviewCard() {
       return false;
     }
   }
-
+  // function to filter by Min Experience
   function filteringByExp(item) {
     if (minExperience == "All") {
       return true;
@@ -185,7 +177,7 @@ export default function RecipeReviewCard() {
       return false;
     }
   }
-
+  //   function to filter by minBasePay
   function filteringByPay(item) {
     if (minBasePay == "All") {
       return true;
@@ -195,7 +187,7 @@ export default function RecipeReviewCard() {
       return false;
     }
   }
-
+  //   function to search data by company name
   function search(item) {
     if (companyName == "") {
       return true;
@@ -206,6 +198,7 @@ export default function RecipeReviewCard() {
     }
   }
 
+  //   function to filter data by mode
   function filteringByMode(item) {
     if (lowerCasedMode.length == 0 || lowerCasedMode.includes("in-office")) {
       return true;
@@ -218,6 +211,14 @@ export default function RecipeReviewCard() {
       return false;
     }
   }
+
+  //function ot combine filters
+  const combineFilters =
+    (...filters) =>
+    (item) => {
+      return filters.map((filter) => filter(item)).every((x) => x === true);
+    };
+
   return (
     <>
       <Box
@@ -239,8 +240,6 @@ export default function RecipeReviewCard() {
               search,
               filteringByMode
             )
-
-            // }
           )
           .map((d) => (
             <Card

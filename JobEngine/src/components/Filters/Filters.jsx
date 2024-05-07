@@ -41,9 +41,7 @@ const JobRoles = [
   "Data Engineer",
   "Tech Lead",
 ];
-
 const locations = ["Delhi NCR", "Bangalore", "Mumbai", "Pune", "Chennai"];
-
 const Mode = ["Remote", "Hybrid", "In-office"];
 const TechStack = ["React", "Golang", "PHP", "Nodejs", "Ruby/Rails"];
 const Exp = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "10"];
