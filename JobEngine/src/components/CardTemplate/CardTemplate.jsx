@@ -49,7 +49,7 @@ export default function CardTemplate() {
       };
 
       let bodyContent = JSON.stringify({
-        limit: 10,
+        limit: 20,
         offset: index,
       });
       let response;
@@ -73,7 +73,7 @@ export default function CardTemplate() {
       }
     };
     fetchdata();
-  }, []);
+  }, [index]);
 
   //Function to fetch more data by changing the values of the offset
   const fetchMoreData = React.useCallback(async () => {
@@ -170,7 +170,7 @@ export default function CardTemplate() {
   }
   // function to filter by Job Roles
   function filteringByRoles(item) {
-    if (lowerCasedRoles.length == 0) {
+    if (lowerCasedRoles.length === 0) {
       return true;
     } else if (lowerCasedRoles.includes(item.jobRole.toLowerCase())) {
       return true;
