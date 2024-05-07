@@ -7,13 +7,16 @@ import Typography from "@mui/material/Typography";
 import { Chip, Box, Button, AvatarGroup } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
+import SimpleDialog from "../DialogBox/DialogBox";
 import "./CardTemplate.css";
+
 
 export default function CardTemplate() {
   const [loading, setLoading] = React.useState(true);
   const [isLoadingMoreData, setIsLoadingMoreData] = React.useState(false);
   const [index, setIndex] = React.useState(1);
   const [data, setData] = React.useState([]);
+  const [open,setOpen]= React.useState(false)
   //  accessing state present in the redux store
   const jobRole = useSelector((state) => state.filter.jobRole);
   const lowerCasedRoles = jobRole.map((e) => e.toLowerCase());
@@ -28,6 +31,14 @@ export default function CardTemplate() {
   );
   const minExperience = useSelector((state) => state.filter.minExperience);
 
+  //fucntion to handle the dialog 
+  const handleDialogBoxOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogBoxClose=()=>{
+    setOpen(false)
+  }
   //   UseEffect to fetch initial Data
   React.useEffect(() => {
     const fetchdata = async () => {
@@ -287,7 +298,7 @@ export default function CardTemplate() {
                   <b> Job Description </b> <br />
                   {d.jobDetailsFromCompany}
                 </Typography>
-                <Typography
+                <Button
                   sx={{
                     width: "100%",
                     textAlign: "center",
@@ -295,12 +306,15 @@ export default function CardTemplate() {
                     mt: -0.5,
                     color: "#4943da",
                   }}
-                  onClick={() => {
-                    console.log("CLCI");
-                  }}
+                  onClick={handleDialogBoxOpen}
                 >
                   View Job
-                </Typography>
+                </Button>
+                <SimpleDialog
+                jobDescription={d.jobDetailsFromCompany}
+                op={open}
+                handleClose={handleDialogBoxClose}
+                />
                 <Typography
                   sx={{
                     marginBottom: 1,
@@ -342,6 +356,7 @@ export default function CardTemplate() {
       >
         {isLoadingMoreData && <CircularProgress />}
       </Box>
+
     </>
   );
 }
