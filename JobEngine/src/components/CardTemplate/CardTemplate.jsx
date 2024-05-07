@@ -192,7 +192,7 @@ export default function CardTemplate() {
   function filteringByPay(item) {
     if (minBasePay == "All") {
       return true;
-    } else if (item.minJdSalary >= minBasePay) {
+    } else if (item.minJdSalary >= parseInt(minBasePay.slice(0,-1))) {
       return true;
     } else {
       return false;
