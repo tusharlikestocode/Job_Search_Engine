@@ -29,7 +29,7 @@ const names = [
   'IOS',
   'React Native',
   'Android',
-  'Data Engineer'
+  'Data Engineer','Tech Lead'
 ];
 
 
@@ -37,7 +37,7 @@ const locations = [
     'Delhi NCR',
     'Bangalore',
     'Mumbai',
-    'Pune'
+    'Pune','Chennai'
   ];
 
   const Mode = [
