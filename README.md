@@ -1,4 +1,4 @@
-# Frontend Assignment by WeekDay
+# Frontend Project by WeekDay
 
 ### Instructions to run:
 
